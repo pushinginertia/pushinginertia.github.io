@@ -1,16 +1,17 @@
 ---
 layout: post
 title: Install NTP on CentOS
+tags: [DevOps]
+excerpt: How to install and test ntpd on CentOS
 ---
 
-
-# Install NTP and its documentation.
+## Install NTP and its documentation
 
 ```sh
 yum install ntp ntp-doc
 ```
 
-# Configure NTP servers to query from.
+## Configure NTP servers to query from
 
 Head to http://www.pool.ntp.org/en/ and select the country based on the geographical location of the server. For example, the following servers would be used for a server located in the U.S.:
 
@@ -23,11 +24,11 @@ server 3.us.pool.ntp.org
 
 Edit `/etc/ntp.conf`, replacing the default servers with the ones identified above.
 
-# Review security configuration.
+## Review security configuration
 
 The default settings are most likely sufficient, but review them against the NTP access restrictions documentation and modify as needed.
 
-# Configure leap seconds.
+## Configure leap seconds
 
 Download the leap seconds file from http://www.ietf.org/timezones/data/leap-seconds.list and save it to the server in a location like `/var/lib/ntp/leapfile`. Ensure that this file is readable by `ntpd`.
 
@@ -39,7 +40,7 @@ leapfile /var/lib/ntp/leapfile
 
 See: http://support.ntp.org/bin/view/Support/ConfiguringNTP#Section_6.14.
 
-# Configure logging.
+## Configure logging
 
 Log output is placed in `/var/log/messages` by default but can be overridden if desired. My preference is to leave it there as it doesn’t really make sense to have a separate log file for a specific service, but the following line in `/etc/ntp.conf` will log elsewhere.
 
@@ -49,13 +50,13 @@ logfile /var/log/ntp.log
 
 See: https://www.redhat.com/archives/rhl-list/2007-December/msg03702.html
 
-# Start the ntpd service
+## Start the ntpd service
 
 ```sh
 service ntpd start
 ```
 
-# Check synchronization status with peers.
+## Check synchronization status with peers
 
 ```sh
 # ntpq -p
@@ -67,7 +68,7 @@ service ntpd start
 +F-Current.sjela 204.123.2.72     2 u    5   64  377   98.932    1.000  14.950
 ```
 
-# Sniff UDP port 123.
+## Sniff UDP port 123
 
 Watch for NTP packets on UDP 123. It should take a minute or so to see some traffic to the NTP servers.
 
@@ -84,7 +85,7 @@ listening on eth0, link-type EN10MB (Ethernet), capture size 65535 bytes
 12:39:47.475338 IP host2.kingrst.com.ntp > localhost.ntp: NTPv4, Server, length 48
 ```
 
-# Query current status of ntpd.
+## Query current status of ntpd
 
 ```sh
 # ntpdc -c sysinfo
